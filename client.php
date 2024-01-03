@@ -13,7 +13,7 @@ if ($err) {
 }
 
 // Call the 'hello' method on the server
-$result = $client->call('hello', array('name' => 'John Doe'));
+$result = $client->call('hello', array('name' => 'Irfani'));
 
 // Check for faults
 if ($client->fault) {

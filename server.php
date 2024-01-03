@@ -24,7 +24,7 @@ $server->register(
 // Define the 'hello' method
 function hello($name)
 {
-    return 'Hello, ' . $name;
+    return 'Hello Comrade, ' . $name;
 }
 
 // Process the SOAP request
