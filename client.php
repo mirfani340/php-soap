@@ -1,6 +1,6 @@
 <?php
 
-require_once 'nusoap.php';
+require_once 'vendor/autoload.php';
 
 // Create a new NuSOAP client
 $client = new nusoap_client('http://localhost/php-soap/server.php?wsdl', true);
