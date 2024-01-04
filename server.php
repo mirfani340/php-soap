@@ -1,34 +1,34 @@
 <?php
-
 require_once 'vendor/autoload.php';
 
-// Create a new NuSOAP server
+// Inisialisasi server
 $server = new nusoap_server();
 
-// Configure WSDL
-$namespace = 'http://localhost/php-soap/server';
-$server->configureWSDL('HelloService', $namespace);
+// Konfigurasi WSDL
+$namespace = 'http://localhost/php-soap';
+$server->configureWSDL('SistemRegistrasi', $namespace);
 
-// Register the 'hello' method
+// Registrasi operasi
 $server->register(
-    'hello',                  // method name
-    array('name' => 'xsd:string'), // input parameters
-    array('return' => 'xsd:string'), // output parameters
-    $namespace,               // namespace
-    false,                    // soapaction (use false for automatic)
-    'rpc',                    // style
-    'encoded',                // use
-    'Says hello to the caller' // documentation
+    'checkPaymentStatus',    // Nama operasi
+    array('nim' => 'xsd:string'), // Parameter input
+    array('return' => 'xsd:boolean'), // Tipe data kembalian
+    $namespace,              // Namespace
+    false,                   // SoapAction
+    'rpc',                   // Style
+    'encoded',               // Encoding
+    'Check payment status'   // Dokumentasi
 );
 
-// Define the 'hello' method
-function hello($name)
-{
-    return 'Hello Comrade, ' . $name;
+// Operasi untuk memeriksa status pembayaran
+function checkPaymentStatus($nim) {
+    // Logika bisnis untuk memeriksa status pembayaran
+    // Implementasikan logika sesuai dengan kebutuhan
+    // Return true jika sudah bayar, false jika belum
+    return true; // Contoh sederhana, selalu mengembalikan true
 }
 
-// Process the SOAP request
+// Proses permintaan web service
 $rawPostData = file_get_contents("php://input");
 $server->service($rawPostData);
-
 ?>
