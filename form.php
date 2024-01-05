@@ -33,7 +33,7 @@
 
     <!-- form pendaftaran -->
     <div class="container">
-        <h2 class="text-center mt-5 mb-5">Form Pendaftaran Beasiswa</h2>
+        <h2 class="text-center mt-5 mb-5">Form Pendaftaran KRS</h2>
         <form action="submit.php" method="post" enctype="multipart/form-data" class="mb-5">
 
             <div class="mb-3 row">
@@ -74,10 +74,11 @@
                 </div>
             </div>
 
+            <!-- Status Pembayaran (Read-only indicator) -->
             <div class="mb-3 row">
-                <label for="ipk" class="col-sm-2 col-form-label">IPK</label>
+                <label for="status_bayar" class="col-sm-2 col-form-label">Status Pembayaran</label>
                 <div class="col-sm-10">
-                    <input type="number" step="0.01" class="form-control" id="ipk" name="ipk" required>
+                    <input type="text" class="form-control" id="status_bayar" name="status_bayar" value="<?php echo (isset($status_bayar) && $status_bayar === 0) ? 'Belum Bayar' : (($status_bayar === 1) ? 'Sudah Bayar' : 'Null'); ?>" readonly>
                 </div>
             </div>
 
@@ -111,75 +112,55 @@
         maka nilai IPK akan otomatis muncul, jika   
     -->
     <script>
-        // Script dijalankan saat halaman sudah siap ditampilkan.
-        $(document).ready(function() {
-            // Run this function every time the IPK value changes
-                $('#ipk').change(function() {
-                    // Get the IPK value from the input field
-                    var ipk = $(this).val();
-                
-                    if (ipk > 3) {
-                        // Move the focus to the "Jenis Beasiswa" field
-                        $('#jenis_beasiswa').focus();
+    // Script dijalankan saat halaman sudah siap ditampilkan.
+    $(document).ready(function() {
+        // Menangani input dari user pada elemen dengan id 'nama' ketika terjadi event 'input'
+        $('#nama').on('input', function() {
+
+            // Mengambil nilai input dari elemen dengan id 'nama' yang diinputkan oleh user.
+            var nama = $(this).val();
+
+            // Melakukan ajax request ke server menggunakan fungsi ajax() dengan mengirim data berupa nama yang diinputkan oleh user pada form pendaftaran.
+            $.ajax({
+                url: 'get_status_bayar.php',
+                type: 'post',
+                data: {
+                    nama: nama
+                },
+
+                // Ketika ajax request sukses, script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. Jika nilai ipk kurang dari 3, maka tombol 'jenis_beasiswa', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
+                success: function(response) {
+                    // Map the numeric value to text value
+                    var statusText = (response == 0) ? 'Belum Bayar' : 'Sudah Bayar';
+                    
+                    // Set the text value to the #status_bayar field
+                    $('#status_bayar').val(statusText);
+
+                    // Disable/enable other fields based on the status
+                    if (response == 0) {
+                        $('#jenis_beasiswa').prop('disabled', true);
+                        $('#berkas').prop('disabled', true);
+                        $('#daftar').prop('disabled', true);
+                    } else {
+                        $('#jenis_beasiswa').prop('disabled', false);
+                        $('#berkas').prop('disabled', false);
+                        $('#daftar').prop('disabled', false);
                     }
-                });
-            // Menangani input dari user pada elemen dengan id 'nama' ketika terjadi event 'input'
-            $('#nama').on('input', function() {
-
-                // Mengambil nilai input dari elemen dengan id 'nama' yang diinputkan oleh user.
-                var nama = $(this).val();
-
-                // Melakukan ajax request ke server menggunakan fungsi ajax() dengan mengirim data berupa nama yang diinputkan oleh user pada form pendaftaran.
-                $.ajax({
-                    url: 'get_ipk.php',
-                    type: 'post',
-                    data: {
-                        nama: nama
-                    },
-
-
-                    // Ketika ajax request sukses, script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. Jika nilai ipk kurang dari 3, maka tombol 'jenis_beasiswa', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
-                    success: function(response) {
-                        $('#ipk').val(response);
-                        if (response < 3) {
-                            $('#jenis_beasiswa').prop('disabled', true);
-                            $('#berkas').prop('disabled', true);
-                            $('#daftar').prop('disabled', true);
-                        } else {
-                            $('#jenis_beasiswa').prop('disabled', false);
-                            $('#berkas').prop('disabled', false);
-                            $('#daftar').prop('disabled', false);
-                        }
-                    }
-                });
-            });
-
-            // Menangani input dari user pada elemen dengan id 'ipk' ketika terjadi event 'input'.
-            $('#ipk').on('input', function() {
-
-                // Mengambil nilai input dari elemen dengan id 'ipk' yang diinputkan oleh user.
-                var ipk = $(this).val();
-
-                // Jika nilai ipk kurang dari 3, maka tombol 'jenis_beasiswa', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
-                if (ipk < 3) {
-                    $('#jenis_beasiswa').prop('disabled', true);
-                    $('#berkas').prop('disabled', true);
-                    $('#daftar').prop('disabled', true);
-                } else {
-                    $('#jenis_beasiswa').prop('disabled', false);
-                    $('#berkas').prop('disabled', false);
-                    $('#daftar').prop('disabled', false);
                 }
             });
         });
-    </script>
+
+        // Jangan perlu menangani perubahan nilai pada elemen '#status_bayar', karena nilainya sudah diatur oleh PHP dan tidak boleh diubah oleh user.
+    });
+</script>
+
 
 
 </body>
 <footer class="bg-light text-center text-lg-start fixed-bottom">
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-        © 2023 Copyright PKM
+        © 2024 Copyright PKM
     </div>
     <!-- Copyright -->
 </footer>
