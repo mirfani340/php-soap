@@ -23,7 +23,7 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link {{($active === " home ") ? 'active' : ''}} " href="index.php">Home</a>
-                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar</a>
+                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar KRS</a>
                     <a class="nav-link {{($active === "pendaftar") ? 'active' : ''}} " href="hasil.php">Pendaftar</a>
                 </div>
             </div>
@@ -83,13 +83,13 @@
             </div>
 
             <div class="mb-3 row">
-                <label for="jenis_beasiswa" class="col-sm-2 col-form-label">Jenis Beasiswa</label>
+                <label for="jenis_matakuliah" class="col-sm-2 col-form-label">Matakuliah</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="jenis_beasiswa" name="jenis_beasiswa" required>
-                        <option value="">-- Pilih Jenis Beasiswa --</option>
-                        <option value="A">Beasiswa Akademik</option>
-                        <option value="B">Beasiswa Non-Akademik</option>
-                        <option value="C">Beasiswa Internasional</option>
+                    <select class="form-control" id="jenis_matakuliah" name="jenis_matakuliah" required>
+                        <option value="">-- Pilih Jenis Matakuliah --</option>
+                        <option value="A">DPW 1</option>
+                        <option value="B">DPW 2</option>
+                        <option value="C">Microservice</option>
                     </select>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" name="daftar" id="daftar">Daftar</button>
+            <button type="submit" class="btn btn-primary" name="daftar" id="daftar">Daftar KRS</button>
             <button type="reset" class="btn btn-danger" name="batal" id="batal">Batal</button>
         </form>
     </div>
@@ -128,7 +128,7 @@
                     nama: nama
                 },
 
-                // Ketika ajax request sukses, script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. Jika nilai ipk kurang dari 3, maka tombol 'jenis_beasiswa', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
+                // Ketika ajax request sukses, script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. Jika nilai ipk kurang dari 3, maka tombol 'jenis_matakuliah', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
                 success: function(response) {
                     // Map the numeric value to text value
                     var statusText = (response == 0) ? 'Belum Bayar' : 'Sudah Bayar';
@@ -138,11 +138,11 @@
 
                     // Disable/enable other fields based on the status
                     if (response == 0) {
-                        $('#jenis_beasiswa').prop('disabled', true);
+                        $('#jenis_matakuliah').prop('disabled', true);
                         $('#berkas').prop('disabled', true);
                         $('#daftar').prop('disabled', true);
                     } else {
-                        $('#jenis_beasiswa').prop('disabled', false);
+                        $('#jenis_matakuliah').prop('disabled', false);
                         $('#berkas').prop('disabled', false);
                         $('#daftar').prop('disabled', false);
                     }

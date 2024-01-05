@@ -12,7 +12,7 @@ if (isset($_POST['daftar'])) {
     $hp = $_POST['hp'];
     $semester = $_POST['semester'];
     $ipk = $_POST['ipk'];
-    $jenis_beasiswa = $_POST['jenis_beasiswa'];
+    $jenis_matakuliah = $_POST['jenis_matakuliah'];
     $berkas = $_FILES['berkas']['name'];
     $status_ajuan = "belum di verifikasi";
 
@@ -29,8 +29,8 @@ if (isset($_POST['daftar'])) {
     move_uploaded_file($_FILES["berkas"]["tmp_name"], $target_file);
 
     //  query untuk memasukkan data ke database
-    $query = "INSERT INTO pendaftar (nama, email, hp, semester, ipk, jenis_beasiswa, berkas, status_ajuan) 
-              VALUES ('$nama', '$email', '$hp', $semester, $ipk, '$jenis_beasiswa', '$berkas', '$status_ajuan')";
+    $query = "INSERT INTO pendaftar (nama, email, hp, semester, ipk, jenis_matakuliah, berkas, status_ajuan) 
+              VALUES ('$nama', '$email', '$hp', $semester, $ipk, '$jenis_matakuliah', '$berkas', '$status_ajuan')";
 
     //jalankan query dan simpan hasilnya
     $result = mysqli_query($conn, $query);
@@ -105,7 +105,7 @@ mysqli_close($conn);
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-link {{($active === " home ") ? 'active' : ''}} " href="index.php">Home</a>
-                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar</a>
+                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar KRS</a>
                     <a class="nav-link {{($active === " pendaftar ") ? 'active' : ''}} " href="hasil.php">Pendaftar</a>
                 </div>
             </div>

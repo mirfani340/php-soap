@@ -29,7 +29,7 @@ CREATE TABLE `pendaftar` (
   `hp` varchar(15) NOT NULL,
   `semester` int(11) NOT NULL,
   `ipk` float NOT NULL,
-  `jenis_beasiswa` varchar(20) NOT NULL,
+  `jenis_matakuliah` varchar(20) NOT NULL,
   `berkas` varchar(100) NOT NULL,
   `status_ajuan` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
