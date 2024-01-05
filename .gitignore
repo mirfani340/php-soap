@@ -19,3 +19,4 @@ composer.lock
 
 # Ignore build artifacts
 /build/
+.lando.yml
