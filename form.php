@@ -107,10 +107,6 @@
     </div>
     <!-- end form pendaftaran -->
 
-    <!-- 
-        script untuk menegecek jika diketik di form nama sesuai dengan nama di database,
-        maka nilai IPK akan otomatis muncul, jika   
-    -->
     <script>
     // Script dijalankan saat halaman sudah siap ditampilkan.
     $(document).ready(function() {
@@ -149,12 +145,8 @@
                 }
             });
         });
-
-        // Jangan perlu menangani perubahan nilai pada elemen '#status_bayar', karena nilainya sudah diatur oleh PHP dan tidak boleh diubah oleh user.
     });
 </script>
-
-
 
 </body>
 <footer class="bg-light text-center text-lg-start fixed-bottom">

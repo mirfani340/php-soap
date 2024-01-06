@@ -1,9 +1,8 @@
 <?php
-require_once 'config.php';
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
+// Create NuSOAP client
+$client = new nusoap_client('http://localhost:32772/nusoap_server.php?wsdl', true);
 
 // jika tombol daftar ditekan, ambil data dari form dan simpan ke database
 if (isset($_POST['daftar'])) {
@@ -11,7 +10,6 @@ if (isset($_POST['daftar'])) {
     $email = $_POST['email'];
     $hp = $_POST['hp'];
     $semester = $_POST['semester'];
-    $ipk = $_POST['ipk'];
     $jenis_matakuliah = $_POST['jenis_matakuliah'];
     $berkas = $_FILES['berkas']['name'];
     $status_ajuan = "belum di verifikasi";
@@ -28,59 +26,41 @@ if (isset($_POST['daftar'])) {
     //  simpan file ke folder tujuan upload
     move_uploaded_file($_FILES["berkas"]["tmp_name"], $target_file);
 
-    //  query untuk memasukkan data ke database
-    $query = "INSERT INTO pendaftar (nama, email, hp, semester, ipk, jenis_matakuliah, berkas, status_ajuan) 
-              VALUES ('$nama', '$email', '$hp', $semester, $ipk, '$jenis_matakuliah', '$berkas', '$status_ajuan')";
+    // Prepare data to be sent to the NuSOAP server
+    $params = array(
+        'name' => $nama,
+        'email' => $email,
+        'hp' => $hp,
+        'semester' => $semester,
+        'jenis_matakuliah' => $jenis_matakuliah,
+        'berkas' => $berkas,
+        'status_ajuan' => $status_ajuan
+    );
 
-    //jalankan query dan simpan hasilnya
-    $result = mysqli_query($conn, $query);
+    // Call the NuSOAP server's getData method
+    $result = $client->call('getData', $params);
 
-    // Capture the email from the form submission
-    $email = $_POST['email'];
-
-    // $mail = new PHPMailer(true);
-
-    // try {
-    //     //Server settings
-    //     $mail->isSMTP();                                     
-    //     $mail->Host       = 'smtp.mailgun.org';              
-    //     $mail->SMTPAuth   = true;                             
-    //     $mail->Username   = '';              
-    //     $mail->Password   = '';                        
-    //     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  
-    //     $mail->Port       = 587;                             
-
-    //     //Recipients
-    //     $mail->setFrom('no-reply@muhammadirfani.dev	', 'Admin PKM');
-    //     $mail->addAddress($email);
-
-    //     //Content
-    //     $mail->isHTML(true);                                  
-    //     $mail->Subject = 'Terima kasih sudah mendaftar';
-    //     $mail->Body    = 'Halo ' . $nama . ',<br><br>
-    //     Terima kasih telah mendaftar untuk PKM!<br>
-    //     Kami telah menerima aplikasi Anda dan akan segera meninjau.<br>
-    //     Sementara itu, jangan ragu untuk menjelajahi website kami untuk informasi lebih lanjut.<br><br>
-    //     Salam hangat,<br>
-    //     Tim PKM';
-
-    //     $mail->send();
-    //     // echo 'Message has been sent';
-    // } catch (Exception $e) {
-    //     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    // }
-
-    // // cek apakah query berhasil dijalankan atau tidak
-    // if ($result) {
-    //     echo "<script>alert('Pendaftaran berhasil!');</script>";
-    // } else {
-    //     echo "<script>alert('Pendaftaran gagal!');</script>";
-    // }
+    // Check if the NuSOAP call was successful
+    if ($client->fault) {
+        // Handle NuSOAP error
+        $error = 'NuSOAP Error: ' . $client->faultstring;
+        echo $error;
+    } else {
+        // Check if there was an error in the NuSOAP response
+        $err = $client->getError();
+        if ($err) {
+            // Handle NuSOAP response error
+            $error = 'NuSOAP Response Error: ' . $err;
+            echo $error;
+        } else {
+            // NuSOAP call was successful, you can use the $result data
+            // Capture the email from the form submission
+            $email = $_POST['email'];
+            // Rest of your code...
+        }
+    }
 }
-
-mysqli_close($conn);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
