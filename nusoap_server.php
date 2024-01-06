@@ -13,7 +13,8 @@ $server->register('getData',
         'semester' => 'xsd:string',
         'jenis_matakuliah' => 'xsd:string',
         'berkas' => 'xsd:string',
-        'status_ajuan' => 'xsd:string'
+        'status_ajuan' => 'xsd:string',
+        'status_bayar' => 'xsd:string'
     ),
     array('return' => 'xsd:string'),
     'urn:PKMWebService',

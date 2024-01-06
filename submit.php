@@ -2,7 +2,7 @@
 require_once 'vendor/autoload.php';
 
 // Create NuSOAP client
-$client = new nusoap_client('http://localhost:32772/nusoap_server.php?wsdl', true);
+$client = new nusoap_client('http://localhost:32772/nusoap_server.php?wsdl&debug=1', 'wsdl', true);
 
 // jika tombol daftar ditekan, ambil data dari form dan simpan ke database
 if (isset($_POST['daftar'])) {
@@ -13,6 +13,7 @@ if (isset($_POST['daftar'])) {
     $jenis_matakuliah = $_POST['jenis_matakuliah'];
     $berkas = $_FILES['berkas']['name'];
     $status_ajuan = "belum di verifikasi";
+    $status_bayar = $_POST['status_bayar'];
 
     //folder tujuan upload file
     $target_dir = "uploads/";
@@ -34,7 +35,8 @@ if (isset($_POST['daftar'])) {
         'semester' => $semester,
         'jenis_matakuliah' => $jenis_matakuliah,
         'berkas' => $berkas,
-        'status_ajuan' => $status_ajuan
+        'status_ajuan' => $status_ajuan,
+        'status_bayar' => $status_bayar
     );
 
     // Call the NuSOAP server's getData method
