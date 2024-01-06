@@ -1,5 +1,4 @@
-CREATE DATABASE IF NOT EXISTS your_database;
-USE your_database;
+USE lamp;
 
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
