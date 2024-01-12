@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 // Membuat query untuk mengambil nilai email, hp, semester, dan status_bayar_bpp dari tabel pendaftar di database berdasarkan nama yang diterima dari file JavaScript.
-$query = "SELECT nama FROM mahasiswa";
+$query = "SELECT nama FROM mata_kuliah";
 
 // Menjalankan query pada database menggunakan koneksi database yang dibuat sebelumnya. Hasil dari query disimpan di variabel $result.
 $result = mysqli_query($conn, $query);

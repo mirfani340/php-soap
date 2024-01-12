@@ -28,10 +28,10 @@ CREATE TABLE `pendaftar` (
   `email` varchar(50) NOT NULL,
   `hp` varchar(15) NOT NULL,
   `semester` int(11) NOT NULL,
-  `jenis_matakuliah` varchar(20) NOT NULL,
+  `mata_kuliah` varchar(20) NOT NULL,
   `berkas` varchar(100) NOT NULL,
   `status_ajuan` varchar(100) NOT NULL,
-  `status_bayar` varchar(100) NOT NULL,
+  `status_bayar_bpp` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

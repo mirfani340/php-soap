@@ -8,12 +8,15 @@ require 'vendor/autoload.php';
 // jika tombol daftar ditekan, ambil data dari form dan simpan ke database
 if (isset($_POST['daftar'])) {
     $nama = $_POST['nama'];
-    $email = $_POST['email'];
-    $hp = $_POST['hp'];
-    $semester = $_POST['semester'];
-    $jenis_matakuliah = $_POST['jenis_matakuliah'];
+    $mata_kuliah = $_POST['mata_kuliah'];
     $berkas = $_FILES['berkas']['name'];
-    $status_ajuan = "belum di verifikasi";
+    $status_ajuan = "pending";
+
+    $queryNIM = "SELECT id FROM mahasiswa WHERE nama='$nama'";
+
+    //jalankan query dan simpan hasilnya
+    $resultyNIM = mysqli_query($conn, $queryNIM);
+    $nim = mysqli_fetch_assoc($resultyNIM)['id'];
 
     //folder tujuan upload file
     $target_dir = "uploads/";
@@ -28,53 +31,11 @@ if (isset($_POST['daftar'])) {
     move_uploaded_file($_FILES["berkas"]["tmp_name"], $target_file);
 
     //  query untuk memasukkan data ke database
-    $query = "INSERT INTO pendaftar (nama, email, hp, semester, jenis_matakuliah, berkas, status_ajuan) 
-              VALUES ('$nama', '$email', '$hp', $semester, '$jenis_matakuliah', '$berkas', '$status_ajuan')";
+    $query = "INSERT INTO krs (mata_kuliah, berkas, status_ajuan, mahasiswa_id) 
+              VALUES ('$mata_kuliah', '$berkas', '$status_ajuan', '$nim')";
 
     //jalankan query dan simpan hasilnya
     $result = mysqli_query($conn, $query);
-
-    // Capture the email from the form submission
-    $email = $_POST['email'];
-
-    // $mail = new PHPMailer(true);
-
-    // try {
-    //     //Server settings
-    //     $mail->isSMTP();                                     
-    //     $mail->Host       = 'smtp.mailgun.org';              
-    //     $mail->SMTPAuth   = true;                             
-    //     $mail->Username   = '';              
-    //     $mail->Password   = '';                        
-    //     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;  
-    //     $mail->Port       = 587;                             
-
-    //     //Recipients
-    //     $mail->setFrom('no-reply@muhammadirfani.dev	', 'Admin PKM');
-    //     $mail->addAddress($email);
-
-    //     //Content
-    //     $mail->isHTML(true);                                  
-    //     $mail->Subject = 'Terima kasih sudah mendaftar';
-    //     $mail->Body    = 'Halo ' . $nama . ',<br><br>
-    //     Terima kasih telah mendaftar untuk PKM!<br>
-    //     Kami telah menerima aplikasi Anda dan akan segera meninjau.<br>
-    //     Sementara itu, jangan ragu untuk menjelajahi website kami untuk informasi lebih lanjut.<br><br>
-    //     Salam hangat,<br>
-    //     Tim PKM';
-
-    //     $mail->send();
-    //     // echo 'Message has been sent';
-    // } catch (Exception $e) {
-    //     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    // }
-
-    // // cek apakah query berhasil dijalankan atau tidak
-    // if ($result) {
-    //     echo "<script>alert('Pendaftaran berhasil!');</script>";
-    // } else {
-    //     echo "<script>alert('Pendaftaran gagal!');</script>";
-    // }
 }
 
 mysqli_close($conn);
@@ -95,17 +56,13 @@ mysqli_close($conn);
 
 <body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="container">
-            <a class="navbar-brand" href="index.php">PKM</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link {{($active === " home ") ? 'active' : ''}} " href="index.php">Home</a>
-                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar KRS</a>
-                    <a class="nav-link {{($active === " pendaftar ") ? 'active' : ''}} " href="hasil.php">Pendaftar</a>
+                    <a class="nav-link {{($active === "daftar") ? 'active' : ''}} " href="index.php">Registrasi KRS</a>
+                    <a class="nav-link {{($active === "pendaftar") ? 'active' : ''}} " href="daftar_mahasiswa.php">Daftar Mahasiswa</a>
+                    <a class="nav-link {{($active === "pendaftar") ? 'active' : ''}} " href="hasil.php">KRS</a>
                 </div>
             </div>
         </div>

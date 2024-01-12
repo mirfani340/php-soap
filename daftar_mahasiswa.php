@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php'; // mengimpor konfigurasi koneksi database
 
-$query = "SELECT mahasiswa_id, mata_kuliah, berkas, status_ajuan FROM krs"; // menyimpan query untuk mengambil seluruh data pendaftar
+$query = "SELECT * FROM mahasiswa"; // menyimpan query untuk mengambil seluruh data pendaftar
 $result = mysqli_query($conn, $query); // mengeksekusi query dan menyimpan hasilnya pada variabel $result
 ?>
 
@@ -34,10 +34,11 @@ $result = mysqli_query($conn, $query); // mengeksekusi query dan menyimpan hasil
         <table class="table">
             <thead>
                 <tr>
-                    <th>NIM</th>
-                    <th>Mata Kuliah</th>
-                    <th>Berkas</th>
-                    <th>Status Ajuan</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>No. HP</th>
+                    <th>Semester</th>
+                    <th>Status Bayar</th>
                 </tr>
             </thead>
 
@@ -50,10 +51,11 @@ $result = mysqli_query($conn, $query); // mengeksekusi query dan menyimpan hasil
                     Nilai dari setiap kolom data tersebut ditampilkan menggunakan fungsi echo untuk mencetak nilainya ke dalam HTML.
                      -->
                     <tr>
-                        <td><?php echo $row['mahasiswa_id']; ?></td>
-                        <td><?php echo $row['mata_kuliah']; ?></td>
-                        <td><?php echo $row['berkas']; ?></td>
-                        <td><?php echo $row['status_ajuan']; ?></td>
+                        <td><?php echo $row['nama']; ?></td>
+                        <td><?php echo $row['email']; ?></td>
+                        <td><?php echo $row['hp']; ?></td>
+                        <td><?php echo $row['semester']; ?></td>
+                        <td><?php echo $row['status_bayar_bpp']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>

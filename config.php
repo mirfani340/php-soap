@@ -1,9 +1,9 @@
 <?php
 // untuk menghubungkan database
-$servername = "database";
-$username = "lamp";
-$password = "lamp";
-$dbname = "lamp";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "db_soap";
 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
