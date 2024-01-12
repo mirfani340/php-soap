@@ -22,8 +22,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link {{($active === " home ") ? 'active' : ''}} " href="index.php">Home</a>
-                    <a class="nav-link {{($active === " daftar ") ? 'active' : ''}} " href="form.php">Daftar KRS</a>
+                    <a class="nav-link {{($active === "home") ? 'active' : ''}} " href="index.php">Home</a>
+                    <a class="nav-link {{($active === "daftar") ? 'active' : ''}} " href="form.php">Daftar KRS</a>
                     <a class="nav-link {{($active === "pendaftar") ? 'active' : ''}} " href="hasil.php">Pendaftar</a>
                 </div>
             </div>
@@ -78,7 +78,7 @@
             <div class="mb-3 row">
                 <label for="status_bayar" class="col-sm-2 col-form-label">Status Pembayaran</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="status_bayar" name="status_bayar" value="<?php echo (isset($status_bayar) && $status_bayar === 0) ? 'Belum Bayar' : (($status_bayar === 1) ? 'Sudah Bayar' : 'Null'); ?>" readonly>
+                    <input type="text" class="form-control" id="status_bayar" name="status_bayar" value="" readonly>
                 </div>
             </div>
 
@@ -107,10 +107,6 @@
     </div>
     <!-- end form pendaftaran -->
 
-    <!-- 
-        script untuk menegecek jika diketik di form nama sesuai dengan nama di database,
-        maka nilai IPK akan otomatis muncul, jika   
-    -->
     <script>
     // Script dijalankan saat halaman sudah siap ditampilkan.
     $(document).ready(function() {
@@ -127,17 +123,34 @@
                 data: {
                     nama: nama
                 },
-
-                // Ketika ajax request sukses, script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. Jika nilai ipk kurang dari 3, maka tombol 'jenis_matakuliah', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
+                dataType: 'json',
+                // TODO: - Create Show IPK feature
+                // Ketika ajax request sukses, 
+                // script akan mengambil nilai ipk yang diterima dari server dan memasukkan nilai tersebut ke dalam elemen dengan id 'ipk'. 
+                // Jika nilai ipk kurang dari 3, maka tombol 'jenis_matakuliah', 'berkas', dan 'daftar' akan dinonaktifkan dengan menggunakan fungsi prop(). 
+                // Jika nilai ipk lebih atau sama dengan 3, maka tombol-tombol tersebut akan diaktifkan kembali.
                 success: function(response) {
+                    console.log(response); // Log the response to the console for debugging
+
+                    // Verify that the properties are accessible
+                    console.log(response.email);
+                    console.log(response.hp);
+                    console.log(response.semester);
+                    console.log(response.status_bayar);
+
                     // Map the numeric value to text value
-                    var statusText = (response == 0) ? 'Belum Bayar' : 'Sudah Bayar';
-                    
+                    var statusText = (response.status_bayar == 0) ? 'Belum Bayar' : 'Sudah Bayar';
+
                     // Set the text value to the #status_bayar field
                     $('#status_bayar').val(statusText);
 
+                    // Set the values to the new fields
+                    $('#email').val(response.email);
+                    $('#hp').val(response.hp);
+                    $('#semester').val(response.semester);
+
                     // Disable/enable other fields based on the status
-                    if (response == 0) {
+                    if (response.status_bayar == 0) {
                         $('#jenis_matakuliah').prop('disabled', true);
                         $('#berkas').prop('disabled', true);
                         $('#daftar').prop('disabled', true);
@@ -153,8 +166,6 @@
         // Jangan perlu menangani perubahan nilai pada elemen '#status_bayar', karena nilainya sudah diatur oleh PHP dan tidak boleh diubah oleh user.
     });
 </script>
-
-
 
 </body>
 <footer class="bg-light text-center text-lg-start fixed-bottom">

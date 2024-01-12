@@ -11,7 +11,6 @@ if (isset($_POST['daftar'])) {
     $email = $_POST['email'];
     $hp = $_POST['hp'];
     $semester = $_POST['semester'];
-    $ipk = $_POST['ipk'];
     $jenis_matakuliah = $_POST['jenis_matakuliah'];
     $berkas = $_FILES['berkas']['name'];
     $status_ajuan = "belum di verifikasi";
@@ -29,8 +28,8 @@ if (isset($_POST['daftar'])) {
     move_uploaded_file($_FILES["berkas"]["tmp_name"], $target_file);
 
     //  query untuk memasukkan data ke database
-    $query = "INSERT INTO pendaftar (nama, email, hp, semester, ipk, jenis_matakuliah, berkas, status_ajuan) 
-              VALUES ('$nama', '$email', '$hp', $semester, $ipk, '$jenis_matakuliah', '$berkas', '$status_ajuan')";
+    $query = "INSERT INTO pendaftar (nama, email, hp, semester, jenis_matakuliah, berkas, status_ajuan) 
+              VALUES ('$nama', '$email', '$hp', $semester, '$jenis_matakuliah', '$berkas', '$status_ajuan')";
 
     //jalankan query dan simpan hasilnya
     $result = mysqli_query($conn, $query);
