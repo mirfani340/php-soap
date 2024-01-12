@@ -28,10 +28,10 @@ CREATE TABLE `pendaftar` (
   `email` varchar(50) NOT NULL,
   `hp` varchar(15) NOT NULL,
   `semester` int(11) NOT NULL,
-  `ipk` float NOT NULL,
   `jenis_matakuliah` varchar(20) NOT NULL,
   `berkas` varchar(100) NOT NULL,
   `status_ajuan` varchar(100) NOT NULL,
+  `status_bayar` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -42,7 +42,7 @@ CREATE TABLE `pendaftar` (
 
 LOCK TABLES `pendaftar` WRITE;
 /*!40000 ALTER TABLE `pendaftar` DISABLE KEYS */;
-INSERT INTO `pendaftar` VALUES (24,'Muhammad Irfani','20104037@ittelkom-pwt.ac.id','911',6,3.7,'A','example.pdf','belum di verifikasi');
+INSERT INTO `pendaftar` VALUES (24,'Muhammad Irfani','20104037@ittelkom-pwt.ac.id','911',6,'A','example.pdf','belum di verifikasi', 'Sudah Bayar');
 /*!40000 ALTER TABLE `pendaftar` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
