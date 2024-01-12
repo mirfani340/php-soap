@@ -39,7 +39,8 @@
             <div class="mb-3 row">
                 <label for="nama" class="col-sm-2 col-form-label">Masukkan Nama</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nama" name="nama" required>
+                    <select class="form-control" id="nama" name="nama" required></select>
+                    <!-- <input type="text" class="form-control" id="nama" name="nama" required> -->
                 </div>
             </div>
 
@@ -110,6 +111,26 @@
     <script>
     // Script dijalankan saat halaman sudah siap ditampilkan.
     $(document).ready(function() {
+        $.ajax({
+            url: 'get_names.php',
+            type: 'get',
+            dataType: 'json',
+            success: function(response) {
+                // Populate the dropdown with fetched names
+                var select = $('#nama');
+                select.empty();
+                $.each(response, function(index, value) {
+                    select.append($('<option>', {
+                        value: value,
+                        text: value
+                    }));
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
         // Menangani input dari user pada elemen dengan id 'nama' ketika terjadi event 'input'
         $('#nama').on('input', function() {
 
