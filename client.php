@@ -1,8 +1,7 @@
 <?php
-
 require_once 'vendor/autoload.php';
 
-// Create a new NuSOAP client
+// Inisialisasi client
 $client = new nusoap_client('http://localhost/php-soap/server.php?wsdl', true);
 
 // Check for errors
@@ -12,10 +11,11 @@ if ($err) {
     exit();
 }
 
-// Call the 'hello' method on the server
-$result = $client->call('hello', array('name' => 'Irfani'));
+// Memanggil operasi untuk memeriksa status pembayaran
+$nim = '20104037'; // Ganti dengan NIM mahasiswa yang ingin dicek
+$result = $client->call('checkPaymentStatus', array('nim' => $nim));
 
-// Check for faults
+// Menampilkan hasil
 if ($client->fault) {
     echo 'Fault: ';
     print_r($result);
@@ -26,8 +26,11 @@ if ($client->fault) {
         echo 'Error: ' . $err;
     } else {
         // Display the result
-        echo 'Result: ' . $result;
+        if ($result) {
+            echo "Mahasiswa dengan NIM $nim sudah melakukan pembayaran.";
+        } else {
+            echo "Mahasiswa dengan NIM $nim belum melakukan pembayaran.";
+        }
     }
 }
-
 ?>

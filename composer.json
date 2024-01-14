@@ -1,5 +1,12 @@
 {
     "require": {
+        "nyholm/psr7": "^1.8",
+        "phpmailer/phpmailer": "^6.8",
         "econea/nusoap": "^0.9.16"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
